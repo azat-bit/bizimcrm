@@ -1,0 +1,192 @@
+{% extends "FinanceBase.html" %}
+
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    form {
+        width: 80%;
+        margin: 20px auto;
+    }
+
+    input, select, button {
+        padding: 8px;
+        margin: 5px;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .error {
+        color: red;
+    }
+</style>
+
+<h1 style="text-align:center;">📋 Fatura Yönetimi</h1>
+
+<!-- ✅ Fatura Ekleme Formu -->
+<form id="invoice-form">
+    <h3>➕ Yeni Fatura Ekle</h3>
+    <input type="number" id="customer_id" placeholder="Müşteri ID" required>
+    <input type="date" id="invoice_date" required>
+    <input type="date" id="due_date" required>
+    <input type="number" id="amount" placeholder="Tutar" step="0.01" required>
+    <select id="status">
+        <option value="pending">Ödeme Bekleniyor</option>
+        <option value="paid">Ödendi</option>
+        <option value="overdue">Vadesi Geçti</option>
+    </select>
+    <button type="submit">Fatura Ekle</button>
+    <p id="invoice-message"></p>
+</form>
+
+<!-- ✅ Fatura Listesi -->
+<h3 style="text-align:center;">📄 Fatura Listesi</h3>
+<table id="invoice-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Müşteri</th>
+            <th>Fatura Tarihi</th>
+            <th>Vade Tarihi</th>
+            <th>Tutar</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- AJAX ile doldurulacak -->
+    </tbody>
+</table>
+
+<!-- ✅ Ödeme Ekleme Formu -->
+<form id="payment-form">
+    <h3>💳 Ödeme Ekle</h3>
+    <input type="number" id="invoice_id" placeholder="Fatura ID" required>
+    <input type="number" id="payment_amount" placeholder="Ödeme Tutarı" step="0.01" required>
+    <select id="payment_method">
+        <option value="credit_card">Kredi Kartı</option>
+        <option value="bank_transfer">Banka Havalesi</option>
+        <option value="cash">Nakit</option>
+    </select>
+    <button type="submit">Ödeme Ekle</button>
+    <p id="payment-message"></p>
+</form>
+
+<!-- ✅ jQuery AJAX -->
+<script>
+    $(document).ready(function() {
+
+        // 📌 Fatura Listesini Yükle
+        function loadInvoices() {
+            $.ajax({
+                url: '/finance/invoices/',
+                method: 'GET',
+                success: function(data) {
+                    let rows = '';
+                    data.forEach(function(invoice) {
+                        rows += `
+                            <tr>
+                                <td>${invoice.id}</td>
+                                <td>${invoice.customer_id}</td>
+                                <td>${invoice.invoice_date}</td>
+                                <td>${invoice.due_date}</td>
+                                <td>${invoice.amount}</td>
+                                <td>${invoice.status}</td>
+                                <td>
+                                    <button onclick="deleteInvoice(${invoice.id})">❌ Sil</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    $('#invoice-table tbody').html(rows);
+                }
+            });
+        }
+
+        // 📌 Sayfa yüklendiğinde faturaları getir
+        loadInvoices();
+
+        // 📌 Fatura Ekleme
+        $('#invoice-form').submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/finance/invoices/create/',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    customer_id: $('#customer_id').val(),
+                    invoice_date: $('#invoice_date').val(),
+                    due_date: $('#due_date').val(),
+                    amount: $('#amount').val(),
+                    status: $('#status').val()
+                }),
+                success: function(response) {
+                    $('#invoice-message').text(response.message).removeClass('error').addClass('success');
+                    loadInvoices();
+                    $('#invoice-form')[0].reset();
+                },
+                error: function() {
+                    $('#invoice-message').text('❗ Fatura eklenemedi.').removeClass('success').addClass('error');
+                }
+            });
+        });
+
+        // 📌 Fatura Silme
+        window.deleteInvoice = function(id) {
+            $.ajax({
+                url: `/finance/invoices/${id}/delete/`,
+                method: 'POST',
+                success: function(response) {
+                    alert(response.message);
+                    loadInvoices();
+                },
+                error: function() {
+                    alert('❗ Fatura silinemedi.');
+                }
+            });
+        };
+
+        // 📌 Ödeme Ekleme
+        $('#payment-form').submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/finance/payments/create/',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    invoice_id: $('#invoice_id').val(),
+                    amount: $('#payment_amount').val(),
+                    payment_method: $('#payment_method').val()
+                }),
+                success: function(response) {
+                    $('#payment-message').text(response.message).removeClass('error').addClass('success');
+                    loadInvoices();
+                    $('#payment-form')[0].reset();
+                },
+                error: function() {
+                    $('#payment-message').text('❗ Ödeme eklenemedi.').removeClass('success').addClass('error');
+                }
+            });
+        });
+
+    });
+</script>
+
+{% endblock %}

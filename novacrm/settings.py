@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import pymysql
+pymysql.install_as_MySQLdb()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,8 +70,8 @@ ROOT_URLCONF = 'novacrm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [            os.path.join(BASE_DIR, 'myapp', 'modules', 'sales', 'templates')
-],
+        'DIRS': [            os.path.join(BASE_DIR, 'myapp', 'modules', 'sales', 'templates'),
+                             os.path.join(BASE_DIR, 'myapp', 'modules', 'finance', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,17 +93,16 @@ WSGI_APPLICATION = 'novacrm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bizimcrm',  # Veritabanı adı
-        'USER': '',  # Veritabanı kullanıcısı
-        'PASSWORD': '',  # Şifreniz
-        'HOST': 'localhost',  # Sunucu adresi
-        'PORT': '4306',  # MariaDB portu
+        'NAME': 'bizimcrm',  # MySQL veritabanı adı
+        'USER': 'root',  # MySQL kullanıcı adı (genellikle root)
+        'PASSWORD': '',  # MySQL şifren
+        'HOST': 'localhost',  # Lokal sunucu için 'localhost' veya '127.0.0.1'
+        'PORT': '3306',  # Varsayılan MySQL portu
         'OPTIONS': {
-        
-        }
+            'charset': 'utf8mb4',
+        },
     }
 }
-
 
 
 # Password validation
