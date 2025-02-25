@@ -1,8 +1,68 @@
 {% extends "base.html" %}
-
-{% block title %} Sales Modülü Ana Sayfa {% endblock %}
+{% block title %}Sales Modülü Ana Sayfa{% endblock %}
 
 {% block content %}
-    <h1>Hoşgeldiniz!</h1>
-    <p>Buradan satışlarınızı yönetebilirsiniz.</p>
+<div class="container">
+  <!-- Hoşgeldiniz Mesajı -->
+  <div class="row">
+    <div class="col-12 my-4">
+      <h1>Hoşgeldiniz!</h1>
+      <p>Buradan satışlarınızı yönetebilirsiniz. Aşağıda güncel satış hedefleri, performans metrikleri ve diğer önemli bilgiler yer almaktadır.</p>
+    </div>
+  </div>
+
+  <!-- KPI ve Özet Bilgiler -->
+  <div class="row">
+    <!-- Satış Hedefleri -->
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Satış Hedefleri</h5>
+          <p class="card-text">Güncel satış hedeflerinizi ve gerçekleşen satışlarınızı burada takip edebilirsiniz.</p>
+          <a href="#" class="btn btn-primary">Detaylı İncele</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Performans Metrikleri -->
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Performans Metrikleri</h5>
+          <p class="card-text">Toplam ciro, yeni müşteri kazanımları ve diğer önemli metrikler özetlenmiştir.</p>
+          <a href="#" class="btn btn-primary">Daha Fazla Bilgi</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Son İşlemler -->
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Son İşlemler</h5>
+          <p class="card-text">En son yapılan satışlar, teklif güncellemeleri ve müşteri aktiviteleri burada listelenmektedir.</p>
+          <a href="#" class="btn btn-primary">Tüm İşlemler</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Satış Trendleri Grafiği -->
+  <div class="row">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-header">
+          Satış Trendleri
+        </div>
+        <div class="card-body">
+          <p>Haftalık ve aylık satış trendlerinizi buradan görebilirsiniz.</p>
+          <!-- Grafik entegrasyonu için alan (örneğin Chart.js, Highcharts vb.) -->
+          <div style="height:300px; background-color:#f8f9fa; display:flex; align-items:center; justify-content:center;">
+            <span>Grafik Buraya Eklenecek</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

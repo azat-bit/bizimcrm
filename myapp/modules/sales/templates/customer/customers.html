@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %} Müşteriler {% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Üst kısımda başlık ve Müşteri Ekle butonu -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Müşteri Listesi</h1>
+    <a href="{% url 'sales:new_customer' %}" class="btn btn-success">Müşteri Ekle</a>
+  </div>
+  
+  <!-- Müşteri tablosu -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>İsim</th>
+        <th>E-Posta</th>
+        <th>Telefon</th>
+        <th>Adres</th>
+        <th>İşlemler</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in customers %}
+      <tr>
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ customer.address }}</td>
+        <td>
+          <!-- Üç nokta dropdown menü -->
+          <div class="dropdown">
+            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton{{ customer.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+              ⋮
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ customer.id }}">
+              <li><a class="dropdown-item" href="{% url 'sales:customer_edit' customer.id %}">Düzenle</a></li>
+              <li>
+                <a class="dropdown-item" 
+                   href="{% url 'sales:delete_customer' customer.id %}" 
+                   onclick="return confirm('Bu müşteriyi silmek istediğinize emin misiniz?');">
+                    Sil
+                </a>
+            </li>
+              <li><a class="dropdown-item" href="#">İletişime Geç</a></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
