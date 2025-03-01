@@ -70,8 +70,8 @@ ROOT_URLCONF = 'novacrm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [            os.path.join(BASE_DIR, 'myapp', 'modules', 'sales', 'templates'),
-                             os.path.join(BASE_DIR, 'myapp', 'modules', 'finance', 'templates')],
+               os.path.join(BASE_DIR, 'myapp', 'modules', 'finance', 'templates')],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,6 +84,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'novacrm.wsgi.application'
 
 
@@ -92,20 +94,7 @@ WSGI_APPLICATION = 'novacrm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bizimcrm',  # MySQL veritabanı adı
-        'USER': 'root',  # MySQL kullanıcı adı (genellikle root)
-        'PASSWORD': '',  # MySQL şifren
-        'HOST': 'localhost',  # Lokal sunucu için 'localhost' veya '127.0.0.1'
-        'PORT': '3306',  # Varsayılan MySQL portu
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
-    }
-}
 
-
-# Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
