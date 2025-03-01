@@ -1,0 +1,56 @@
+{% extends "crmbase.html" %}
+
+{% block title %}Kategori Düzenle{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Kategori Düzenle</h1>
+  
+  <!-- AJAX sonucu gösterilecek mesajlar -->
+  <div id="message"></div>
+  
+  <form id="editCategoryForm" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_name" class="form-label">Kategori Adı</label>
+      <input type="text" class="form-control" id="id_name" name="name" value="{{ category.name }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a href="{% url 'crm:list_categories' %}" class="btn btn-secondary">İptal</a>
+  </form>
+</div>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#editCategoryForm').on('submit', function(e){
+        e.preventDefault();
+        $('#message').html('');
+
+        $.ajax({
+            url: "{% url 'crm:edit_category' category.id %}",
+            type: "POST",
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function(response) {
+                if(response.status === 'success'){
+                    $('#message').html('<div class="alert alert-success">'+response.message+'</div>');
+                }
+            },
+            error: function(xhr) {
+                var response = xhr.responseJSON;
+                if(response && response.errors) {
+                    var errorHtml = '<div class="alert alert-danger"><ul>';
+                    $.each(response.errors, function(field, errorMsg){
+                        errorHtml += '<li>' + errorMsg + '</li>';
+                    });
+                    errorHtml += '</ul></div>';
+                    $('#message').html(errorHtml);
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

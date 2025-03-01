@@ -1,0 +1,70 @@
+{% extends "crmbase.html" %}
+
+{% block title %} CRM Ana Sayfa {% endblock %}
+
+{% block content %}
+<div class="container-fluid vh-100 d-flex flex-column">
+    <h1 class="text-center mt-3">Hoşgeldiniz!</h1>
+    <hr>
+    <!-- Üst kısımda başlık ve Müşteri Ekle butonu -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <p class="mb-2">Firmamıza ait müşteriler aşağıda listelenmektedir.</p>
+        
+        <a href="{% url 'crm:new_customer' %}" class="btn">
+            <i class="bi bi-person-plus-fill"></i> Yeni Müşteri
+        </a>
+    </div>
+    
+    <!-- Müşteri tablosu -->
+    <div class="table-responsive flex-grow-1">
+        <table class="table table-striped table-hover w-100">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">İsim</th>
+                    <th scope="col">E-Posta</th>
+                    <th scope="col">Telefon</th>
+                    <th scope="col">Adres</th>
+                    <th scope="col" class="text-center">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.address }}</td>
+                    <td class="text-center">
+                        <!-- Üç nokta dropdown menü -->
+                        <div class="dropdown">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton{{ customer.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ customer.id }}">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'crm:customer_edit' customer.id %}">
+                                        <i class="fas fa-edit me-2"></i> Düzenle
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="{% url 'crm:delete_customer' customer.id %}" onclick="return confirm('Bu müşteriyi silmek istediğinize emin misiniz?');">
+                                        <i class="fas fa-trash me-2"></i> Sil
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-envelope me-2"></i> İletişime Geç
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

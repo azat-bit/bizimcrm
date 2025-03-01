@@ -1,0 +1,79 @@
+{% extends "crmbase.html" %}
+
+{% block title %}Müşteri Düzenle{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h1>Müşteri Düzenle</h1>
+  
+  <!-- AJAX sonucu gösterilecek mesajlar -->
+  <div id="message"></div>
+  
+  <form id="editCustomerForm" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="id_name" class="form-label">İsim</label>
+      <input type="text" class="form-control" id="id_name" name="name" value="{{ customer.name }}">
+    </div>
+    <div class="mb-3">
+      <label for="id_email" class="form-label">E-Posta</label>
+      <input type="email" class="form-control" id="id_email" name="email" value="{{ customer.email }}">
+    </div>
+    <div class="mb-3">
+      <label for="id_phone" class="form-label">Telefon</label>
+      <input type="text" class="form-control" id="id_phone" name="phone" value="{{ customer.phone }}">
+    </div>
+    <div class="mb-3">
+        <label for="id_category" class="form-label">Kategori</label>
+        <select class="form-control" id="id_category" name="category">
+          <option value="">Kategori Seçin</option>
+          {% for category in categories %}
+            <option value="{{ category.id }}" {% if customer.category and customer.category.id == category.id %}selected{% endif %}>
+                {{ category.name }}
+            </option>
+          {% endfor %}
+        </select>
+    </div>
+    <div class="mb-3">
+      <label for="id_address" class="form-label">Adres</label>
+      <textarea class="form-control" id="id_address" name="address">{{ customer.address }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Güncelle</button>
+    <a href="{% url 'crm:customers' %}" class="btn btn-secondary">İptal</a>
+  </form>
+</div>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('#editCustomerForm').on('submit', function(e){
+        e.preventDefault();  // Formun normal submit davranışını engelle
+        $('#message').html('');  // Önceki mesajları temizle
+
+        $.ajax({
+            url: "{% url 'crm:customer_edit' customer.id %}",
+            type: "POST",
+            data: $(this).serialize(),
+            dataType: "json",
+            success: function(response) {
+                if(response.status === 'success'){
+                    $('#message').html('<div class="alert alert-success">'+response.message+'</div>');
+                }
+            },
+            error: function(xhr, status, error) {
+                var response = xhr.responseJSON;
+                if(response && response.errors) {
+                    var errorHtml = '<div class="alert alert-danger"><ul>';
+                    $.each(response.errors, function(field, errorMsg){
+                        errorHtml += '<li>' + field + ': ' + errorMsg + '</li>';
+                    });
+                    errorHtml += '</ul></div>';
+                    $('#message').html(errorHtml);
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

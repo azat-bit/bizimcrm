@@ -22,5 +22,6 @@ from myapp.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home, name="home"),
-    path('sales/', include('myapp.modules.sales.urls', namespace="sales")), 
+    path('sales/', include('myapp.modules.sales.urls', namespace="sales")),
+    path('crm/', include('myapp.modules.crm.urls', namespace="crm")),
 ]

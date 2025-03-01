@@ -67,8 +67,10 @@ ROOT_URLCONF = 'novacrm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [            os.path.join(BASE_DIR, 'myapp', 'modules', 'sales', 'templates')
-],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'myapp', 'modules', 'crm', 'templates'),  # crm templates dizini
+            os.path.join(BASE_DIR, 'myapp', 'modules', 'sales', 'templates'),  # sales templates dizini
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,6 +83,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'novacrm.wsgi.application'
 
 
@@ -89,17 +93,15 @@ WSGI_APPLICATION = 'novacrm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'bizimcrm',  # Veritabanı adı
-        'USER': '',  # Veritabanı kullanıcısı
-        'PASSWORD': '',  # Şifreniz
-        'HOST': 'localhost',  # Sunucu adresi
-        'PORT': '4306',  # MariaDB portu
-        'OPTIONS': {
-        
-        }
+        'USER': 'root',  # Kullanıcı adı (şifresiz)
+        'PASSWORD': '',           # Şifre boş bırakılacak
+        'HOST': 'localhost',      # MySQL sunucusu (localhost)
+        'PORT': '3306',         # Varsayılan MySQL portu
     }
 }
+
 
 
 
