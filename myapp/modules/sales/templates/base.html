@@ -1,56 +1,114 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} Sales Modülü {% endblock %}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        .sidebar {
-            height: 100vh;
-            position: fixed;
-            width: 250px;
-            background-color: #343a40;
-            padding-top: 20px;
-        }
-        .sidebar a {
-            padding: 10px 20px;
-            display: block;
-            color: white;
-            text-decoration: none;
-        }
-        .sidebar a:hover {
-            background-color: #495057;
-        }
-        .content {
-            margin-left: 260px;
-            padding: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Modülü - Sidebar</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .sidebar {
+      position: fixed;
+      height: 100vh;
+      width: 250px;
+      background-color: #343a40;
+      padding-top: 20px;
+      overflow-y: auto;
+    }
+    .sidebar h4 {
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .nav-link {
+      color: #fff;
+      padding: 10px 20px;
+    }
+    .nav-link:hover {
+      background-color: #495057;
+      text-decoration: none;
+    }
+    .submenu .nav-link {
+      padding-left: 40px;
+      font-size: 0.95rem;
+    }
+    .content {
+      margin-left: 260px;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div class="d-flex">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h4 class="text-center text-light">Modüller</h4>
-            <a href="{% url 'sales:index' %}">🏠 Ana Sayfa</a>
-            <a href="{% url 'sales:customers' %}">👥 Müşteriler</a>
-            <a href="{% url 'sales:products' %}">📦 Ürünler</a>
-            <a href="#">📊 Raporlar</a>
-            <a href="#">⚙️ Ayarlar</a>
-            <a href="{% url 'home' %}" class="btn btn-primary m-3">📌 Tüm Modüller</a>
-        </div>
 
-        <!-- Ana İçerik -->
-        <div class="content">
-            <nav class="navbar navbar-light bg-light">
-                <span class="navbar-brand mb-0 h1">Sales Modülü</span>
-            </nav>
-            <div class="container mt-4">
-                {% block content %} {% endblock %}
-            </div>
-        </div>
-    </div>
+  <div class="sidebar">
+    <h4>Sales Modülü</h4>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="{% url 'sales:index' %}">🏠 Dashboard</a>
+      
+      <a class="nav-link" data-bs-toggle="collapse" href="#musterilerSubmenu" role="button">
+        👥 Müşteriler
+      </a>
+      <div class="collapse submenu" id="musterilerSubmenu">
+        <nav class="nav flex-column">
+          <a class="nav-link" href="{% url 'sales:customers' %}">Müşteri Listesi</a>
+          <a class="nav-link" href="#">Müşteri Detayları</a>
+        </nav>
+      </div>
+
+      <a class="nav-link" data-bs-toggle="collapse" href="#urunlerSubmenu" role="button">
+        📦 Ürünler
+      </a>
+      <div class="collapse submenu" id="urunlerSubmenu">
+        <nav class="nav flex-column">
+          <a class="nav-link" href="#">Ürün Listesi</a>
+          <a class="nav-link" href="#">Yeni Ürün Ekle</a>
+          <a class="nav-link" href="#">Kategori Yönetimi</a>
+        </nav>
+      </div>
+
+      <a class="nav-link" data-bs-toggle="collapse" href="#tekliflerSubmenu" role="button">
+        💼 Teklifler
+      </a>
+      <div class="collapse submenu" id="tekliflerSubmenu">
+        <nav class="nav flex-column">
+          <a class="nav-link" href="#">Teklif Listesi</a>
+          <a class="nav-link" href="#">Yeni Teklif Oluştur</a>
+          <a class="nav-link" href="#">Teklif Durumları</a>
+        </nav>
+      </div>
+
+      <a class="nav-link" data-bs-toggle="collapse" href="#siparislerSubmenu" role="button">
+        🛒 Siparişler
+      </a>
+      <div class="collapse submenu" id="siparislerSubmenu">
+        <nav class="nav flex-column">
+          <a class="nav-link" href="#">Sipariş Listesi</a>
+          <a class="nav-link" href="#">Yeni Sipariş Oluştur</a>
+          <a class="nav-link" href="#">Sipariş Takibi</a>
+        </nav>
+      </div>
+
+      <a class="nav-link" data-bs-toggle="collapse" href="#raporlarSubmenu" role="button">
+        📊 Raporlar
+      </a>
+      <div class="collapse submenu" id="raporlarSubmenu">
+        <nav class="nav flex-column">
+          <a class="nav-link" href="#">Satış Raporları</a>
+          <a class="nav-link" href="#">Performans Analizleri</a>
+          <a class="nav-link" href="#">Gelir/Gider Raporları</a>
+        </nav>
+      </div>
+
+      <a class="nav-link btn btn-primary mt-3" href="{% url 'home' %}">📌 Tüm Modüller</a>
+    </nav>
+  </div>
+
+  <div class="content">
+    {% block content %}
+      <h1>Hoşgeldiniz!</h1>
+      <p>Burası içerik alanıdır. Sidebar menüsünü kullanarak gezinme yapabilirsiniz.</p>
+    {% endblock %}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

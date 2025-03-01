@@ -1,5 +1,4 @@
 """novacrm URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
 Examples:
@@ -17,11 +16,10 @@ from django.contrib import admin
 from django.urls import include, path
 
 from myapp.views import home
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", home, name="home"),
     path('sales/', include('myapp.modules.sales.urls', namespace="sales")),
-    path('crm/', include('myapp.modules.crm.urls', namespace="crm")),
+
 ]
+

@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import pymysql
+pymysql.install_as_MySQLdb()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -67,10 +70,8 @@ ROOT_URLCONF = 'novacrm.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'myapp', 'modules', 'crm', 'templates'),  # crm templates dizini
-            os.path.join(BASE_DIR, 'myapp', 'modules', 'sales', 'templates'),  # sales templates dizini
-        ],
+               os.path.join(BASE_DIR, 'myapp', 'modules', 'finance', 'templates')],
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,19 +94,7 @@ WSGI_APPLICATION = 'novacrm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'bizimcrm',  # Veritabanı adı
-        'USER': 'root',  # Kullanıcı adı (şifresiz)
-        'PASSWORD': '',           # Şifre boş bırakılacak
-        'HOST': 'localhost',      # MySQL sunucusu (localhost)
-        'PORT': '3306',         # Varsayılan MySQL portu
-    }
-}
 
-
-
-
-# Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -145,3 +134,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',  # Dosya yolunu ihtiyacınıza göre ayarlayın
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

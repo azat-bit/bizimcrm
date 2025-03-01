@@ -1,1 +1,9 @@
-ÿş
+from django.urls import path
+from . import views  # views.py dosyanÄ±n var olduÄŸundan emin ol
+
+app_name = "finance"
+
+urlpatterns = [
+    path('', views.index, name='finance'),
+
+]
